@@ -2,7 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/selectordie.css" media="all" />
 	<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="scripts/selectordie.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var light_gray="images/circle_gray.png";
@@ -41,31 +43,23 @@
 			//3：绿灯闪
 			//4：红灯闪
 			function set_light(obj){
-				var label_on,label_flash,label_off;
-				label_on = $("#on").children("."+obj.attr("id"));
-				label_flash = $("#flash").children("."+obj.attr("id"));
-				label_off = $("#off").children("."+obj.attr("id"));
+				var label;
+				label = $(".content").children("."+obj.attr("id"));
 				switch(obj.attr("stat")){
 					case "0":
 						obj.attr("src",light_gray);
 						window.clearInterval(obj.attr("intervalID"));
-						label_on.children("img").attr("class","noSelect");
-						label_flash.children("img").attr("class","noSelect");
-						label_off.children("img").attr("class","select");
+						label.html("灭");
 						break;
 					case "1":
 						obj.attr("src",light_green);
 						window.clearInterval(obj.attr("intervalID"));
-						label_on.children("img").attr("class","select");
-						label_flash.children("img").attr("class","noSelect");
-						label_off.children("img").attr("class","noSelect");
+						label.html("亮");
 						break;
 					case "2":
 						obj.attr("src",light_red);
 						window.clearInterval(obj.attr("intervalID"));
-						label_on.children("img").attr("class","select");
-						label_flash.children("img").attr("class","noSelect");
-						label_off.children("img").attr("class","noSelect");
+						label.html("亮");
 						break;
 					case "3":
 						window.clearInterval(obj.attr("intervalID"));
@@ -73,9 +67,7 @@
 							blink(light_gray,light_green,obj);
 						},200); 
 						obj.attr("intervalID",intervalID);
-						label_on.children("img").attr("class","noSelect");
-						label_flash.children("img").attr("class","select");
-						label_off.children("img").attr("class","noSelect");
+						label.html("闪");
 						break;
 					case "4":
 						window.clearInterval(obj.attr("intervalID"));
@@ -83,9 +75,7 @@
 							blink(light_gray,light_red,obj);
 						},200); 
 						obj.attr("intervalID",intervalID);
-						label_on.children("img").attr("class","noSelect");
-						label_flash.children("img").attr("class","select");
-						label_off.children("img").attr("class","noSelect");
+						label.html("闪");
 						break;
 				}
 			}
@@ -115,32 +105,32 @@
 			
 			//点击表格的点击事件
 			function light_select(obj){
-				if(obj.children("img").attr("class")!="select"){
-					var type = obj.attr("class").split(" ")[1];
-					var light = $("#"+type);
-					var stat = obj.parent().attr("id");
-					switch(stat){
-						case "on":
-							light.attr("stat","1");
-							break;
-						case "flash":
-							light.attr("stat","3");
-							break;
-						case "off":
-							light.attr("stat","0")
-							break;
-					}
-					set_light(light);
+				var type = obj.attr("class").split(" ")[1];
+				var light = $("#"+type);
+				var stat = obj.parent().attr("id");
+				switch(stat){
+					case "on":
+						light.attr("stat","1");
+						break;
+					case "flash":
+						light.attr("stat","3");
+						break;
+					case "off":
+						light.attr("stat","0")
+						break;
 				}
+				set_light(light);
 			}
 			
 			$(".light").click(function(){
 				change_light($(this));
 			});
 			
-			$(".check").click(function(){
-				light_select($(this));
-			});
+			// $(".check").click(function(){
+				// light_select($(this));
+			// });
+			
+			$("select").selectOrDie();
 		});
 	</script>
 	<style type="text/css">
@@ -265,43 +255,28 @@
 		#box
 		{
 			border-radius:1.8vh;
-			width:90vw;
-			margin-left:5vw;
-			margin-right:5vw;
 			overflow: hidden;
 		}
-		#form
+		.form
 		{
-			font-size: 2vh;
 			width:90vw;
+			margin-left:5vw;
+			margin-right5vw;
+			font-size: 2vh;
 			text-align: center;
 			table-layout: fixed;
 		}
-		#form .label
+		.form .label
 		{
 			background: #ED6D00;
 			color: white;
 			height: 4vh;
 		}
-		#form .content
+		.form .content
 		{
 			background: white;
 			color: #000000;
 			height: 4vh;
-		}
-		#form .check > img
-		{
-			width: 2.5vh;
-			height: 2.5vh;
-			margin-top:0.5vh;
-		}
-		#form .noSelect
-		{
-			display: none;
-		}
-		#form .select
-		{
-			display: inline;
 		}
 		#tips
 		{
@@ -324,6 +299,8 @@
 			color: white;
 			border-radius:1.3vh;
 		}
+}  
+
 	</style>
 </head>
 <body>
@@ -358,38 +335,44 @@
 		<img src="images/circle_gray.png" class="light" id="LAN" stat="0"/>
 	</div>
 	
-	<div id="box">
-		<table id="form">
-			<tr class="label">
-				<td>&nbsp </td>
-				<td>Power</td>
-				<td>PON</td>
-				<td>LOS</td>
-				<td>LAN</td>
-			</tr>
-			<tr class="content" id="on">
-				<td>亮</td>
-				<td class="check POW"><img class="noSelect" src="images/check-circle.png"></td>
-				<td class="check PON"><img class="noSelect" src="images/check-circle.png"></td>
-				<td class="check LOS"><img class="noSelect" src="images/check-circle.png"></td>
-				<td class="check LAN"><img class="noSelect" src="images/check-circle.png"></td>
-			</tr>
-			<tr class="content" id="flash">
-				<td>闪</td>
-				<td class="check POW"><img class="noSelect" src="images/check-circle.png"></td>
-				<td class="check PON"><img class="noSelect" src="images/check-circle.png"></td>
-				<td class="check LOS"><img class="noSelect" src="images/check-circle.png"></td>
-				<td class="check LAN"><img class="noSelect" src="images/check-circle.png"></td>
-			</tr>
-			<tr class="content" id="off">
-				<td>灭</td>
-				<td class="check POW"><img class="select" src="images/check-circle.png"></td>
-				<td class="check PON"><img class="select" src="images/check-circle.png"></td>
-				<td class="check LOS"><img class="select" src="images/check-circle.png"></td>
-				<td class="check LAN"><img class="select" src="images/check-circle.png"></td>
-			</tr>
-		</table>
-	</div>
+	<table class="form">
+		<tr class="label">
+			<td>Power</td>
+			<td>PON</td>
+			<td>LOS</td>
+			<td>LAN</td>
+		</tr>
+		<tr class="content">
+			<td class="check POW">
+				<select>
+					<option value="on">亮</option>
+					<option value="off">灭</option>
+				</select>
+			</td>
+			<td class="check PON">
+				<select>
+					<option value="on">亮</option>
+					<option value="flash">闪</option>
+					<option value="off">灭</option>
+				</select>
+			</td>
+			<td class="check LOS">
+				<select>
+					<option value="on">亮</option>
+					<option value="flash">闪</option>
+					<option value="off">灭</option>
+				</select>
+			</td>
+			<td class="check LAN">
+				<select>
+					<option value="on">亮</option>
+					<option value="flash">闪</option>
+					<option value="off">灭</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	
 	<p id="tips">
 		注：点击指示灯也可以改变状态。<br>
 		
@@ -400,5 +383,6 @@
 	<div id="submit">
 		确认
 	</div>
+
 </body>
 </html>
