@@ -49,17 +49,17 @@
 					case "0":
 						obj.attr("src",light_gray);
 						window.clearInterval(obj.attr("intervalID"));
-						label.html("灭");
+						//label.html("灭");
 						break;
 					case "1":
 						obj.attr("src",light_green);
 						window.clearInterval(obj.attr("intervalID"));
-						label.html("亮");
+						//label.html("亮");
 						break;
 					case "2":
 						obj.attr("src",light_red);
 						window.clearInterval(obj.attr("intervalID"));
-						label.html("亮");
+						//label.html("亮");
 						break;
 					case "3":
 						window.clearInterval(obj.attr("intervalID"));
@@ -67,7 +67,7 @@
 							blink(light_gray,light_green,obj);
 						},200); 
 						obj.attr("intervalID",intervalID);
-						label.html("闪");
+						//label.html("闪");
 						break;
 					case "4":
 						window.clearInterval(obj.attr("intervalID"));
@@ -75,40 +75,67 @@
 							blink(light_gray,light_red,obj);
 						},200); 
 						obj.attr("intervalID",intervalID);
-						label.html("闪");
+						//label.html("闪");
 						break;
 				}
 			}
 			
-			//点击灯的点击事件
-			function change_light(obj){
-				switch(parseInt(obj.attr("stat"))){
-					case 0:
-						obj.attr("stat","1");
-						set_light(obj);
-						break;
-					case 1:
-						obj.attr("stat","3");
-						set_light(obj);
-						break;
-					case 2:
-						break;
-					case 3:
-						obj.attr("stat","0");
-						set_light(obj);
-						break;
-					case 4:
-						break;
-				}
+			// //点击灯的点击事件
+			// function change_light(obj){
+				// switch(parseInt(obj.attr("stat"))){
+					// case 0:
+						// obj.attr("stat","1");
+						// set_light(obj);
+						// break;
+					// case 1:
+						// obj.attr("stat","3");
+						// set_light(obj);
+						// break;
+					// case 2:
+						// break;
+					// case 3:
+						// obj.attr("stat","0");
+						// set_light(obj);
+						// break;
+					// case 4:
+						// break;
+				// }
 				
-			}
+			// }
 			
-			//点击表格的点击事件
-			function light_select(obj){
-				var type = obj.attr("class").split(" ")[1];
+			// //点击表格的点击事件
+			// function light_select(obj){
+				// var type = obj.attr("class").split(" ")[1];
+				// var light = $("#"+type);
+				// var stat = obj.parent().attr("id");
+				// switch(stat){
+					// case "on":
+						// light.attr("stat","1");
+						// break;
+					// case "flash":
+						// light.attr("stat","3");
+						// break;
+					// case "off":
+						// light.attr("stat","0")
+						// break;
+				// }
+				// set_light(light);
+			// }
+			
+			// $(".light").click(function(){
+				// change_light($(this));
+			// });
+			
+			// $(".check").click(function(){
+				// light_select($(this));
+			// });
+			
+			//下拉菜单选择事件
+			function select_light(obj){
+				var op = obj.val();
+				var type = obj.parents(".check").attr("class").split(" ")[1];
 				var light = $("#"+type);
-				var stat = obj.parent().attr("id");
-				switch(stat){
+				switch(op){
 					case "on":
 						light.attr("stat","1");
 						break;
@@ -116,21 +143,17 @@
 						light.attr("stat","3");
 						break;
 					case "off":
-						light.attr("stat","0")
+						light.attr("stat","0");
 						break;
 				}
 				set_light(light);
 			}
 			
-			$(".light").click(function(){
-				change_light($(this));
-			});
-			
-			// $(".check").click(function(){
-				// light_select($(this));
-			// });
-			
+			$("select").val("off");
 			$("select").selectOrDie();
+			$("select").change(function(){
+				select_light($(this));
+			});
 		});
 	</script>
 	<style type="text/css">
@@ -375,13 +398,13 @@
 		</tr>
 	</table>
 	
-	<p id="tips">
+	<!--<p id="tips">
 		注：点击指示灯也可以改变状态。<br>
 		
-		<!--
+		
 		状态有：灭、亮绿灯、亮红灯、闪绿灯、闪红灯五种<br/><br/>
-		实际光猫不止一个LAN口，请以接入网线的端口为准-->
-	</p>
+		实际光猫不止一个LAN口，请以接入网线的端口为准
+	</p>-->
 	<div id="submit">
 		确认
 	</div>
