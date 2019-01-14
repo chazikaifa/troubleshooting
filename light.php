@@ -9,6 +9,17 @@
 			var light_green="images/circle_green.png";
 			var light_red="images/circle_red.png";
 			
+			function GetQueryString(name)
+			{
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]); return null;
+			}
+			
+			//获取参数
+			var id = GetQueryString("id");
+			console.log(id);
+			
 			//返回按钮
 			$("#back").click(function(){
 				window.location.replace("index.php");
@@ -336,7 +347,7 @@
 		返回
 	</div>
 	<div class="title">
-		手动选择光猫指示灯
+		请选择光猫指示灯
 	</div> 
 	
 	<div id="modem">
