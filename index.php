@@ -39,7 +39,7 @@
 						hit_box.css("background","#FFFFFF");
 					});
 					hit_box.mouseout(function(){
-						lhit_box.css("background","#FFFFFF");
+						hit_box.css("background","#FFFFFF");
 					});
 					hit_box.click(function(){
 						var str="?id="+item.id;
