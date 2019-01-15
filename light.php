@@ -9,6 +9,17 @@
 			var light_green="images/circle_green.png";
 			var light_red="images/circle_red.png";
 			
+			function GetQueryString(name)
+			{
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r!=null)return  unescape(r[2]); return null;
+			}
+			
+			//获取参数
+			var id = GetQueryString("id");
+			console.log(id);
+			
 			//返回按钮
 			$("#back").click(function(){
 				window.location.replace("index.php");
@@ -26,7 +37,6 @@
 			});
 			
 			//定义定时器,控制灯闪烁
-			var b_POW,b_PON,b_LOS,b_LAN;
 			function blink(img1,img2,obj){
 				if(obj.attr("src")==img1){
 					obj.attr("src",img2);
@@ -34,49 +44,113 @@
 					obj.attr("src",img1);
 				}
 			}
+			
 			//灯有几种状态
 			//0：灭
 			//1: 绿灯亮
 			//2：红灯亮
 			//3：绿灯闪
 			//4：红灯闪
-			function change_light(obj){
-				switch(parseInt(obj.attr("stat"))){
-					case 0:
-						obj.attr("stat","1");
+			function set_light(obj){
+				var label_on,label_flash,label_off;
+				label_on = $("#on").children("."+obj.attr("id"));
+				label_flash = $("#flash").children("."+obj.attr("id"));
+				label_off = $("#off").children("."+obj.attr("id"));
+				switch(obj.attr("stat")){
+					case "0":
+						obj.attr("src",light_gray);
+						window.clearInterval(obj.attr("intervalID"));
+						label_on.children("img").attr("class","noSelect");
+						label_flash.children("img").attr("class","noSelect");
+						label_off.children("img").attr("class","select");
+						break;
+					case "1":
 						obj.attr("src",light_green);
+						window.clearInterval(obj.attr("intervalID"));
+						label_on.children("img").attr("class","select");
+						label_flash.children("img").attr("class","noSelect");
+						label_off.children("img").attr("class","noSelect");
 						break;
-					case 1:
-						obj.attr("stat","2");
+					case "2":
 						obj.attr("src",light_red);
+						window.clearInterval(obj.attr("intervalID"));
+						label_on.children("img").attr("class","select");
+						label_flash.children("img").attr("class","noSelect");
+						label_off.children("img").attr("class","noSelect");
 						break;
-					case 2:
-						obj.attr("stat","3");
+					case "3":
+						window.clearInterval(obj.attr("intervalID"));
 						var intervalID = setInterval(function(){
 							blink(light_gray,light_green,obj);
 						},200); 
 						obj.attr("intervalID",intervalID);
+						label_on.children("img").attr("class","noSelect");
+						label_flash.children("img").attr("class","select");
+						label_off.children("img").attr("class","noSelect");
 						break;
-					case 3:
-						obj.attr("stat","4");
+					case "4":
 						window.clearInterval(obj.attr("intervalID"));
 						var intervalID = setInterval(function(){
 							blink(light_gray,light_red,obj);
-						},200);
+						},200); 
 						obj.attr("intervalID",intervalID);
+						label_on.children("img").attr("class","noSelect");
+						label_flash.children("img").attr("class","select");
+						label_off.children("img").attr("class","noSelect");
+						break;
+				}
+			}
+			
+			//点击灯的点击事件
+			function change_light(obj){
+				switch(parseInt(obj.attr("stat"))){
+					case 0:
+						obj.attr("stat","1");
+						set_light(obj);
+						break;
+					case 1:
+						obj.attr("stat","3");
+						set_light(obj);
+						break;
+					case 2:
+						break;
+					case 3:
+						obj.attr("stat","0");
+						set_light(obj);
 						break;
 					case 4:
-						obj.attr("stat","0");
-						obj.attr("src",light_gray);
-						window.clearInterval(obj.attr("intervalID"));
 						break;
-					default:
-						break;
+				}
+				
+			}
+			
+			//点击表格的点击事件
+			function light_select(obj){
+				if(obj.children("img").attr("class")!="select"){
+					var type = obj.attr("class").split(" ")[1];
+					var light = $("#"+type);
+					var stat = obj.parent().attr("id");
+					switch(stat){
+						case "on":
+							light.attr("stat","1");
+							break;
+						case "flash":
+							light.attr("stat","3");
+							break;
+						case "off":
+							light.attr("stat","0")
+							break;
+					}
+					set_light(light);
 				}
 			}
 			
 			$(".light").click(function(){
 				change_light($(this));
+			});
+			
+			$(".check").click(function(){
+				light_select($(this));
 			});
 		});
 	</script>
@@ -87,6 +161,8 @@
 			width: 100vw;
 			height: 100vh;
 			display:contents;
+			margin: 0;
+			padding: 0;
 		}
 		#back
 		{
@@ -127,8 +203,8 @@
 			background:white;
 			margin-left: 5vw;
 			margin-right: 5vw;
-			margin-top: 15vh;
-			margin-bottom: 5vh;
+			margin-top: 13vh;
+			margin-bottom: 7vh;
 			border-radius:5vh;
 			box-shadow: 2vh 2vh 1vh #888888;
 			position:relative;
@@ -199,6 +275,47 @@
 		{
 			left: 70.3%;
 		}
+		#box
+		{
+			border-radius:1.8vh;
+			width:90vw;
+			margin-left:5vw;
+			margin-right:5vw;
+			overflow: hidden;
+		}
+		#form
+		{
+			font-size: 2vh;
+			width:90vw;
+			text-align: center;
+			table-layout: fixed;
+		}
+		#form .label
+		{
+			background: #ED6D00;
+			color: white;
+			height: 4vh;
+		}
+		#form .content
+		{
+			background: white;
+			color: #000000;
+			height: 4vh;
+		}
+		#form .check > img
+		{
+			width: 2.5vh;
+			height: 2.5vh;
+			margin-top:0.5vh;
+		}
+		#form .noSelect
+		{
+			display: none;
+		}
+		#form .select
+		{
+			display: inline;
+		}
 		#tips
 		{
 			font-size:1.7vh;
@@ -218,7 +335,7 @@
 			text-align:center;
 			background:#ED6D00;
 			color: white;
-			border-radius:2vw;
+			border-radius:1.3vh;
 		}
 	</style>
 </head>
@@ -230,7 +347,7 @@
 		返回
 	</div>
 	<div class="title">
-		手动选择光猫指示灯
+		请选择光猫指示灯
 	</div> 
 	
 	<div id="modem">
@@ -253,11 +370,46 @@
 		<img src="images/circle_gray.png" class="light" id="LOS" stat="0"/>
 		<img src="images/circle_gray.png" class="light" id="LAN" stat="0"/>
 	</div>
-	<p id="tips">
-		注：点击指示灯改变状态。<br/><br/>
-		实际光猫不止一个LAN口，请以接入网线的端口为准
-	</p>
 	
+	<div id="box">
+		<table id="form">
+			<tr class="label">
+				<td>&nbsp </td>
+				<td>Power</td>
+				<td>PON</td>
+				<td>LOS</td>
+				<td>LAN</td>
+			</tr>
+			<tr class="content" id="on">
+				<td>亮</td>
+				<td class="check POW"><img class="noSelect" src="images/check-circle.png"></td>
+				<td class="check PON"><img class="noSelect" src="images/check-circle.png"></td>
+				<td class="check LOS"><img class="noSelect" src="images/check-circle.png"></td>
+				<td class="check LAN"><img class="noSelect" src="images/check-circle.png"></td>
+			</tr>
+			<tr class="content" id="flash">
+				<td>闪</td>
+				<td class="check POW"><img class="noSelect" src="images/check-circle.png"></td>
+				<td class="check PON"><img class="noSelect" src="images/check-circle.png"></td>
+				<td class="check LOS"><img class="noSelect" src="images/check-circle.png"></td>
+				<td class="check LAN"><img class="noSelect" src="images/check-circle.png"></td>
+			</tr>
+			<tr class="content" id="off">
+				<td>灭</td>
+				<td class="check POW"><img class="select" src="images/check-circle.png"></td>
+				<td class="check PON"><img class="select" src="images/check-circle.png"></td>
+				<td class="check LOS"><img class="select" src="images/check-circle.png"></td>
+				<td class="check LAN"><img class="select" src="images/check-circle.png"></td>
+			</tr>
+		</table>
+	</div>
+	<p id="tips">
+		注：点击指示灯也可以改变状态。<br>
+		
+		<!--
+		状态有：灭、亮绿灯、亮红灯、闪绿灯、闪红灯五种<br/><br/>
+		实际光猫不止一个LAN口，请以接入网线的端口为准-->
+	</p>
 	<div id="submit">
 		确认
 	</div>
