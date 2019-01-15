@@ -116,20 +116,37 @@
 			function change_light(obj){
 				switch(parseInt(obj.attr("stat"))){
 					case 0:
-						obj.attr("stat","1");
+						if(obj.attr("id")=="LOS"){
+							obj.attr("stat","2");
+						}else{
+							obj.attr("stat","1");
+						}
+						
 						set_light(obj);
 						break;
 					case 1:
-						obj.attr("stat","3");
+						if(obj.attr("id")=="LOS"){
+							obj.attr("stat","4");
+						}else{
+							obj.attr("stat","3");
+						}
 						set_light(obj);
 						break;
 					case 2:
+						if(obj.attr("id")=="LOS"){
+							obj.attr("stat","4");
+						}else{
+							obj.attr("stat","3");
+						}
+						set_light(obj);
 						break;
 					case 3:
 						obj.attr("stat","0");
 						set_light(obj);
 						break;
 					case 4:
+						obj.attr("stat","0");
+						set_light(obj);
 						break;
 				}
 				
@@ -143,10 +160,18 @@
 					var stat = obj.parent().attr("id");
 					switch(stat){
 						case "on":
-							light.attr("stat","1");
+							if(light.attr("id")=="LOS"){
+								light.attr("stat","2");
+							}else{
+								light.attr("stat","1");
+							}
 							break;
 						case "flash":
-							light.attr("stat","3");
+							if(light.attr("id")=="LOS"){
+								light.attr("stat","4");
+							}else{
+								light.attr("stat","3");
+							}
 							break;
 						case "off":
 							light.attr("stat","0")
@@ -215,7 +240,7 @@
 			background:white;
 			margin-left: 5vw;
 			margin-right: 5vw;
-			margin-top: 13vh;
+			margin-top: 10vh;
 			margin-bottom: 7vh;
 			border-radius:5vh;
 			box-shadow: 2vh 2vh 1vh #888888;
@@ -289,7 +314,7 @@
 		}
 		#box
 		{
-			border-radius:1.8vh;
+			border-radius:2vh;
 			width:90vw;
 			margin-left:5vw;
 			margin-right:5vw;
@@ -306,18 +331,18 @@
 		{
 			background: #ED6D00;
 			color: white;
-			height: 4vh;
+			height: 6vh;
 		}
 		#form .content
 		{
 			background: white;
 			color: #000000;
-			height: 4vh;
+			height: 6vh;
 		}
 		#form .check > img
 		{
-			width: 2.5vh;
-			height: 2.5vh;
+			width: 3vh;
+			height: 3vh;
 			margin-top:0.5vh;
 		}
 		#form .noSelect
@@ -340,7 +365,7 @@
 			font-size:2.2vh;
 			margin-left:5vw;
 			margin-right:5vw;
-			margin-top:10vh;
+			margin-top:6vh;
 			width:90vw;
 			height:5vh;
 			line-height:5vh;
