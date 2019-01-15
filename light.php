@@ -9,6 +9,7 @@
 			var light_green="images/circle_green.png";
 			var light_red="images/circle_red.png";
 			
+			//获取参数
 			function GetQueryString(name)
 			{
 				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -16,9 +17,7 @@
 				if(r!=null)return  unescape(r[2]); return null;
 			}
 			
-			//获取参数
 			var id = GetQueryString("id");
-			console.log(id);
 			
 			//光猫类
 			function modem(id,name,des)
@@ -50,29 +49,29 @@
 			
 			//返回按钮
 			$("#back").click(function(){
-				window.location.replace("index.php");
+				history.back(-1);
 			});
 			$("#back_text").click(function(){
-				window.location.replace("index.php");
+				history.back(-1);
 			});
 			//确定按钮
-			$("#submit").click(function(){
+			$(".submit").click(function(){
 				var str = "?POW="+$("#POW").attr("stat")+
 						"&PON="+$("#PON").attr("stat")+
 						"&LOS="+$("#LOS").attr("stat")+
 						"&LAN="+$("#LAN").attr("stat");
-				window.location.replace("result.php"+str);
+				window.location.href = "result.php"+str;
 			});
 			
 			//触摸反馈
-			$("#submit").on("touchstart",function(){
-				$("#submit").css("background","#DC5C00");
+			$(".submit").on("touchstart",function(){
+				$(".submit").attr("class","submit pressed");
 			});
-			$("#submit").on("touchend",function(){
-				$("#submit").css("background","#ED6D00");
+			$(".submit").on("touchend",function(){
+				$(".submit").attr("class","submit");
 			});
-			$("#submit").on("touchcancel",function(){
-				$("#submit").css("background","#ED6D00");
+			$(".submit").on("touchcancel",function(){
+				$(".submit").attr("class","submit");
 			});
 			
 			//定义定时器,控制灯闪烁
@@ -397,7 +396,7 @@
 			text-align: center;
 			color: #777777;
 		}
-		#submit
+		.submit
 		{
 			font-size:2.2vh;
 			margin-left:5vw;
@@ -410,6 +409,10 @@
 			background:#ED6D00;
 			color: white;
 			border-radius:1.3vh;
+		}
+		.pressed{
+			background:#CB4B00;
+			color: #AAAAAA;
 		}
 	</style>
 </head>
@@ -489,7 +492,7 @@
 		状态有：灭、亮绿灯、亮红灯、闪绿灯、闪红灯五种<br/><br/>
 		实际光猫不止一个LAN口，请以接入网线的端口为准-->
 	</p>
-	<div id="submit">
+	<div class="submit">
 		确认
 	</div>
 </body>
