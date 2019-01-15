@@ -32,19 +32,32 @@
 				var list_item = templet.clone();
 				var hit_box = list_item.find(".list_item");
 				if(item.id != -1){
-					hit_box.mousedown(function(){
-						hit_box.css("background","#E0E0E0");
-					});
-					hit_box.mouseup(function(){
-						hit_box.css("background","#FFFFFF");
-					});
-					hit_box.mouseout(function(){
-						hit_box.css("background","#FFFFFF");
-					});
+					//鼠标反馈
+					// hit_box.mousedown(function(){
+						// hit_box.css("background","#E0E0E0");
+					// });
+					// hit_box.mouseup(function(){
+						// hit_box.css("background","#FFFFFF");
+					// });
+					// hit_box.mouseout(function(){
+						// hit_box.css("background","#FFFFFF");
+					// });
 					hit_box.click(function(){
 						var str="?id="+item.id;
 						window.location.replace("light.php"+str);
 					});
+					
+					//触屏反馈
+					hit_box.on("touchstart",function(){
+						hit_box.css("background","#E0E0E0");
+					});
+					hit_box.on("touchend",function(){
+						hit_box.css("background","#FFFFFF");
+					});
+					hit_box.on("touchcancel",function(){
+						hit_box.css("background","#FFFFFF");
+					});
+
 				}else{
 					hit_box.css("background","#E0E0E0");
 				}
@@ -118,7 +131,7 @@
 	}
 	.list_item > .name
 	{
-		height: 3.3vh;
+		height: 3.2vh;
 		width: 82vw;
 		line-height: 4vh;
 		margin-left: 5vw;

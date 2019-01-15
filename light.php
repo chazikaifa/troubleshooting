@@ -36,6 +36,17 @@
 				window.location.replace("result.php"+str);
 			});
 			
+			//触摸反馈
+			$("#submit").on("touchstart",function(){
+				$("#submit").css("background","#DC5C00");
+			});
+			$("#submit").on("touchend",function(){
+				$("#submit").css("background","#ED6D00");
+			});
+			$("#submit").on("touchcancel",function(){
+				$("#submit").css("background","#ED6D00");
+			});
+			
 			//定义定时器,控制灯闪烁
 			function blink(img1,img2,obj){
 				if(obj.attr("src")==img1){
@@ -152,6 +163,7 @@
 			$(".check").click(function(){
 				light_select($(this));
 			});
+			
 		});
 	</script>
 	<style type="text/css">
