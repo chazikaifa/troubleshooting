@@ -20,6 +20,34 @@
 			var id = GetQueryString("id");
 			console.log(id);
 			
+			//光猫类
+			function modem(id,name,des)
+			{
+				this.id = id;
+				this.name = name;
+				this.des = des;
+			}
+			
+			var json_url = "./assets/modem_list.json";
+			//从JSON文件读取光猫列表
+			var modem_list = new Array();
+			$.getJSON(json_url,function(data,stat){
+				if(stat == "success"){
+					for(var i=0;i<data.length;i++){
+						modem_list[i] = new modem(data[i]["id"],data[i]["name"],data[i]["des"]);
+					}
+					
+					$.each(modem_list,function(index,item){
+						if(item.id == id){
+							$("#name").html("<b>"+item.name+"</b>");
+						}
+					});
+				}else{
+					//GET参数正常时不会出现
+					$("#name").html("<b>未知光猫</b>");
+				}
+			});
+			
 			//返回按钮
 			$("#back").click(function(){
 				window.location.replace("index.php");
@@ -233,6 +261,15 @@
 			color: white;
 			line-height: 5vh;
 		}
+		#name
+		{
+			height:8vh;
+			line-height:14vh;
+			font-size:3vh;
+			width:100vw;
+			text-align: center;
+			color: #ED6D00;
+		}
 		#modem
 		{
 			width: 90vw;
@@ -240,7 +277,7 @@
 			background:white;
 			margin-left: 5vw;
 			margin-right: 5vw;
-			margin-top: 10vh;
+			margin-top: 0;
 			margin-bottom: 7vh;
 			border-radius:5vh;
 			box-shadow: 2vh 2vh 1vh #888888;
@@ -386,6 +423,11 @@
 	<div class="title">
 		请选择光猫指示灯
 	</div> 
+	
+	<p id="name">
+		<b>光猫名称</b><br/>
+		
+	</p>
 	
 	<div id="modem">
 		<img id="logo" src="images/logo.jpg" />
