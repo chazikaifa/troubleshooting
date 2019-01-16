@@ -93,34 +93,34 @@
 		#back
 		{
 			width: 10vw;
-			height: 5vh;
+			height: 6vh;
 			position: absolute;
 		}
 		#back > img
 		{
 			width: 4vh;
 			height: 4vh;
-			padding: 0.5vh;
+			padding: 1vh;
 		}
 		#back_text
 		{
-			font-size: 1.8vh;
+			font-size: 2.5vh;
 			width: 20vw;
-			height: 5vh;
+			height: 6vh;
 			color: white;
-			line-height: 5vh;
+			line-height: 6vh;
 			position: absolute;
-			left: 5.5vh;
+			left: 6.5vh;
 		}
 		.title
 		{
-			font-size: 1.8vh;
+			font-size: 2.5vh;
 			text-align: center;
 			width: 100vw;
-			height: 5vh;
+			height: 6vh;
 			background: #ED6D00;
 			color: white;
-			line-height: 5vh;
+			line-height: 6vh;
 		}
 		ul
 		{
