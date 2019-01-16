@@ -47,16 +47,76 @@
 							flag = false;
 							$("#reason").html(data[i]["reason"]);
 							
+							//初始为第一步，上一步应设定为不可用，并取消触摸事件
+							$("#prev").attr("class","button pressed");
+							$("#prev").unbind("touchstart");
+							$("#prev").unbind("touchend");
+							$("#prev").unbind("touchcancel");
+							
 							var solution = data[i]["solution"];
-							$("#solution").html(solution[0]);					
+							$("#solution").attr("index",0);
+							$("#solution").html(solution[0]);			
+							
 							$("#prev").click(function(){
-								
+								var index = parseInt($("#solution").attr("index"));
+								console.log(index);
+								if(index <= 0){
+									console.log("index too small!");
+								}else{
+									$("#solution").attr("index",index-1);
+									$("#solution").html(solution[index-1]);
+									if(index-1 == 0){
+										//若index-1后为0，即不能再上一步
+										$("#prev").attr("class","button pressed");
+										$("#prev").unbind("touchstart");
+										$("#prev").unbind("touchend");
+										$("#prev").unbind("touchcancel");
+									}
+									if(index == solution.length-1){
+										//index等于solution长度-1则需要恢复“下一步”的触摸事件
+										$("#next").attr("class","button");
+										$("#next").on("touchstart",function(){
+											$("#next").attr("class","button pressed");
+										});
+										$("#next").on("touchend",function(){
+											$("#next").attr("class","button");
+										});
+										$("#next").on("touchcancel",function(){
+											$("#next").attr("class","button");
+										});
+									}
+								}
 							});
 							$("#next").click(function(){
-								
+								var index = parseInt($("#solution").attr("index"));
+								console.log(index);
+								if(index >= solution.length-1){
+									console.log("index too large!");
+								}else{
+									$("#solution").attr("index",index+1);
+									$("#solution").html(solution[index+1]);	
+									if(index+1 == solution.length-1){
+										//若index+1后等于solution的长度，即不能再"下一步"
+										$("#next").attr("class","button pressed");
+										$("#next").unbind("touchstart");
+										$("#next").unbind("touchend");
+										$("#next").unbind("touchcancel");
+									}
+									if(index == 0){
+										//index等于0，则需要恢复“上一步”的触摸事件
+										$("#prev").attr("class","button");
+										$("#prev").on("touchstart",function(){
+											$("#prev").attr("class","button pressed");
+										});
+										$("#prev").on("touchend",function(){
+											$("#prev").attr("class","button");
+										});
+										$("#prev").on("touchcancel",function(){
+											$("#prev").attr("class","button");
+										});
+									}
+								}
 							});
-							
-							
 						}
 					}
 					if(flag){
