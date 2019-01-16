@@ -185,7 +185,7 @@
 		}
 		
 		.container > .box_title{
-			height:7vh;
+			height: 7vh;
 			line-height:7vh;
 			text-align:center;
 			font-size:3vh;
@@ -202,9 +202,9 @@
 			margin-bottom: 0;
 			margin-left: 4vw;
 			margin-right: 4vw;
-			border: 0;
 			height: 0.1vh;
-			background-image: linear-gradient(to right, rgba(200, 200, 200, 0.5), rgba(0, 0, 0, 0.75), rgba(200, 200, 200, 0.5));
+			border: none;
+			border-top:0.1vh solid #AAAAAA;
 		}
 		.solution{
 			height: 40vh;
@@ -216,14 +216,14 @@
 			position: absolute;
 			bottom: 0;
 			left: 0;
-			width:44.9vw;
+			width:44.8vw;
 		}
 		#next
 		{
 			position: absolute;
 			bottom: 0;
 			right: 0;
-			width:44.9vw;
+			width:44.8vw;
 		}
 		.button
 		{

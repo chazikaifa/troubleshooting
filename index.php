@@ -136,16 +136,16 @@
 		.list_item
 		{
 			width: 92vw;
-			height:10vh;
+			height:15vh;
 			margin:4vw;
 			background:white;
 			border-radius:1.5vh;
 		}
 		.list_item > .name
 		{
-			height: 3.2vh;
+			height: 6vh;
 			width: 82vw;
-			line-height: 4vh;
+			line-height: 9vh;
 			margin-left: 5vw;
 			margin-right: 5vw;
 			font-size: 3.8vw;
@@ -160,9 +160,9 @@
 			margin-bottom: 0;
 			margin-left: 4vw;
 			margin-right: 4vw;
-			border: 0;
 			height: 0.1vh;
-			background-image: linear-gradient(to right, rgba(200, 200, 200, 0.5), rgba(0, 0, 0, 0.75), rgba(200, 200, 200, 0.5));
+			border: none;
+			border-top:0.1vh solid #AAAAAA;
 		}
 		.list_item > .des
 		{
