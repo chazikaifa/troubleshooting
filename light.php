@@ -9,6 +9,7 @@
 			var light_green="images/circle_green.png";
 			var light_red="images/circle_red.png";
 			
+			//获取参数
 			function GetQueryString(name)
 			{
 				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -16,24 +17,61 @@
 				if(r!=null)return  unescape(r[2]); return null;
 			}
 			
-			//获取参数
 			var id = GetQueryString("id");
-			console.log(id);
+			
+			//光猫类
+			function modem(id,name,des)
+			{
+				this.id = id;
+				this.name = name;
+				this.des = des;
+			}
+			
+			var json_url = "./assets/modem_list.json";
+			//从JSON文件读取光猫列表
+			var modem_list = new Array();
+			$.getJSON(json_url,function(data,stat){
+				if(stat == "success"){
+					for(var i=0;i<data.length;i++){
+						modem_list[i] = new modem(data[i]["id"],data[i]["name"],data[i]["des"]);
+					}
+					
+					$.each(modem_list,function(index,item){
+						if(item.id == id){
+							$("#name").html("<b>"+item.name+"</b>");
+						}
+					});
+				}else{
+					//GET参数正常时不会出现
+					$("#name").html("<b>未知光猫</b>");
+				}
+			});
 			
 			//返回按钮
 			$("#back").click(function(){
-				window.location.replace("index.php");
+				history.back(-1);
 			});
 			$("#back_text").click(function(){
-				window.location.replace("index.php");
+				history.back(-1);
 			});
 			//确定按钮
-			$("#submit").click(function(){
+			$(".submit").click(function(){
 				var str = "?POW="+$("#POW").attr("stat")+
 						"&PON="+$("#PON").attr("stat")+
 						"&LOS="+$("#LOS").attr("stat")+
 						"&LAN="+$("#LAN").attr("stat");
-				window.location.replace("result.php"+str);
+				window.location.href = "result.php"+str;
+			});
+			
+			//触摸反馈
+			$(".submit").on("touchstart",function(){
+				$(".submit").attr("class","submit pressed");
+			});
+			$(".submit").on("touchend",function(){
+				$(".submit").attr("class","submit");
+			});
+			$(".submit").on("touchcancel",function(){
+				$(".submit").attr("class","submit");
 			});
 			
 			//定义定时器,控制灯闪烁
@@ -105,20 +143,37 @@
 			function change_light(obj){
 				switch(parseInt(obj.attr("stat"))){
 					case 0:
-						obj.attr("stat","1");
+						if(obj.attr("id")=="LOS"){
+							obj.attr("stat","2");
+						}else{
+							obj.attr("stat","1");
+						}
+						
 						set_light(obj);
 						break;
 					case 1:
-						obj.attr("stat","3");
+						if(obj.attr("id")=="LOS"){
+							obj.attr("stat","4");
+						}else{
+							obj.attr("stat","3");
+						}
 						set_light(obj);
 						break;
 					case 2:
+						if(obj.attr("id")=="LOS"){
+							obj.attr("stat","4");
+						}else{
+							obj.attr("stat","3");
+						}
+						set_light(obj);
 						break;
 					case 3:
 						obj.attr("stat","0");
 						set_light(obj);
 						break;
 					case 4:
+						obj.attr("stat","0");
+						set_light(obj);
 						break;
 				}
 				
@@ -132,10 +187,18 @@
 					var stat = obj.parent().attr("id");
 					switch(stat){
 						case "on":
-							light.attr("stat","1");
+							if(light.attr("id")=="LOS"){
+								light.attr("stat","2");
+							}else{
+								light.attr("stat","1");
+							}
 							break;
 						case "flash":
-							light.attr("stat","3");
+							if(light.attr("id")=="LOS"){
+								light.attr("stat","4");
+							}else{
+								light.attr("stat","3");
+							}
 							break;
 						case "off":
 							light.attr("stat","0")
@@ -152,6 +215,7 @@
 			$(".check").click(function(){
 				light_select($(this));
 			});
+			
 		});
 	</script>
 	<style type="text/css">
@@ -196,6 +260,15 @@
 			color: white;
 			line-height: 5vh;
 		}
+		#name
+		{
+			height:8vh;
+			line-height:14vh;
+			font-size:3vh;
+			width:100vw;
+			text-align: center;
+			color: #ED6D00;
+		}
 		#modem
 		{
 			width: 90vw;
@@ -203,7 +276,7 @@
 			background:white;
 			margin-left: 5vw;
 			margin-right: 5vw;
-			margin-top: 13vh;
+			margin-top: 0;
 			margin-bottom: 7vh;
 			border-radius:5vh;
 			box-shadow: 2vh 2vh 1vh #888888;
@@ -277,7 +350,7 @@
 		}
 		#box
 		{
-			border-radius:1.8vh;
+			border-radius:2vh;
 			width:90vw;
 			margin-left:5vw;
 			margin-right:5vw;
@@ -294,18 +367,18 @@
 		{
 			background: #ED6D00;
 			color: white;
-			height: 4vh;
+			height: 6vh;
 		}
 		#form .content
 		{
 			background: white;
 			color: #000000;
-			height: 4vh;
+			height: 6vh;
 		}
 		#form .check > img
 		{
-			width: 2.5vh;
-			height: 2.5vh;
+			width: 3vh;
+			height: 3vh;
 			margin-top:0.5vh;
 		}
 		#form .noSelect
@@ -323,12 +396,12 @@
 			text-align: center;
 			color: #777777;
 		}
-		#submit
+		.submit
 		{
 			font-size:2.2vh;
 			margin-left:5vw;
 			margin-right:5vw;
-			margin-top:10vh;
+			margin-top:6vh;
 			width:90vw;
 			height:5vh;
 			line-height:5vh;
@@ -336,6 +409,10 @@
 			background:#ED6D00;
 			color: white;
 			border-radius:1.3vh;
+		}
+		.pressed{
+			background:#CB4B00;
+			color: #AAAAAA;
 		}
 	</style>
 </head>
@@ -349,6 +426,11 @@
 	<div class="title">
 		请选择光猫指示灯
 	</div> 
+	
+	<p id="name">
+		<b>光猫名称</b><br/>
+		
+	</p>
 	
 	<div id="modem">
 		<img id="logo" src="images/logo.jpg" />
@@ -410,7 +492,7 @@
 		状态有：灭、亮绿灯、亮红灯、闪绿灯、闪红灯五种<br/><br/>
 		实际光猫不止一个LAN口，请以接入网线的端口为准-->
 	</p>
-	<div id="submit">
+	<div class="submit">
 		确认
 	</div>
 </body>
