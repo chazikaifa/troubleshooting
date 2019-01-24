@@ -285,8 +285,8 @@
 		#modem > #logo
 		{
 			position:absolute;
-			width:10vh;
-			height:6vh;
+			width:7.7vh;
+			height:4.4vh;
 			bottom: 7vh;
 			right: 1vh;
 		}
@@ -433,7 +433,7 @@
 	</p>
 	
 	<div id="modem">
-		<img id="logo" src="images/logo.jpg" />
+		<img id="logo" src="images/logo.png" />
 		<img id="wo" src="images/wo.jpg" />
 		<div class="light_label" id="POW_label">
 			Power
