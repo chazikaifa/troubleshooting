@@ -59,9 +59,9 @@
 							
 							$("#prev").click(function(){
 								var index = parseInt($("#solution").attr("index"));
-								console.log(index);
+								//console.log(index);
 								if(index <= 0){
-									console.log("index too small!");
+									//console.log("index too small!");
 								}else{
 									$("#solution").attr("index",index-1);
 									$("#solution").html(solution[index-1]);
@@ -91,7 +91,7 @@
 								var index = parseInt($("#solution").attr("index"));
 								console.log(index);
 								if(index >= solution.length-1){
-									console.log("index too large!");
+									//console.log("index too large!");
 								}else{
 									$("#solution").attr("index",index+1);
 									$("#solution").html(solution[index+1]);	
@@ -120,11 +120,32 @@
 						}
 					}
 					if(flag){
-						console.log("没有对应的组合类型");
+						//没有对应的组合类型
+						$("#reason").html("错误的指示灯组合");
+						$("#solution").html("正常的光猫不会出现这样的指示灯组合，请返回上一步输入正确的指示灯组合。<br\/><br\/>若确认指示灯组合输入无误，请拨打10010申报故障。");
+						$("#next").attr("class","button pressed");
+						$("#next").unbind("touchstart");
+						$("#next").unbind("touchend");
+						$("#next").unbind("touchcancel");
+						$("#prev").attr("class","button pressed");
+						$("#prev").unbind("touchstart");
+						$("#prev").unbind("touchend");
+						$("#prev").unbind("touchcancel");
 					}
 				}else{
-					console.log("无法获取故障列表");
-					//光猫故障情况获取失败
+					//无法获取故障列表
+					$("#reason").html("服务器错误，请稍后重试！");
+					$("#next").attr("class","button pressed");
+					$("#next").unbind("touchstart");
+					$("#next").unbind("touchend");
+					$("#next").unbind("touchcancel");
+					$("#prev").attr("class","button pressed");
+					$("#prev").unbind("touchstart");
+					$("#prev").unbind("touchend");
+					$("#prev").unbind("touchcancel");
+					
+					$("#no_solve").css("display","none");
+					$("solve").css("display","none");
 				}
 			});
 		});
@@ -141,35 +162,35 @@
 		}
 		#back
 		{
-			width: 100vw;
-			height: 5vh;
+			width: 10vw;
+			height: 6vh;
 			position: absolute;
 		}
 		#back > img
 		{
 			width: 4vh;
 			height: 4vh;
-			padding: 0.5vh;
+			padding: 1vh;
 		}
 		#back_text
 		{
-			font-size: 1.8vh;
+			font-size: 2.5vh;
 			width: 20vw;
-			height: 5vh;
+			height: 6vh;
 			color: white;
-			line-height: 5vh;
+			line-height: 6vh;
 			position: absolute;
-			left: 5.5vh;
+			left: 6.5vh;
 		}
 		.title
 		{
-			font-size: 1.8vh;
+			font-size: 2.5vh;
 			text-align: center;
 			width: 100vw;
-			height: 5vh;
+			height: 6vh;
 			background: #ED6D00;
 			color: white;
-			line-height: 5vh;
+			line-height: 6vh;
 		}
 		.container{
 			width: 90vw;
@@ -185,7 +206,7 @@
 		}
 		
 		.container > .box_title{
-			height:7vh;
+			height: 7vh;
 			line-height:7vh;
 			text-align:center;
 			font-size:3vh;
@@ -202,9 +223,9 @@
 			margin-bottom: 0;
 			margin-left: 4vw;
 			margin-right: 4vw;
-			border: 0;
 			height: 0.1vh;
-			background-image: linear-gradient(to right, rgba(200, 200, 200, 0.5), rgba(0, 0, 0, 0.75), rgba(200, 200, 200, 0.5));
+			border: none;
+			border-top:0.1vh solid #AAAAAA;
 		}
 		.solution{
 			height: 40vh;
@@ -216,14 +237,14 @@
 			position: absolute;
 			bottom: 0;
 			left: 0;
-			width:44.9vw;
+			width:44.8vw;
 		}
 		#next
 		{
 			position: absolute;
 			bottom: 0;
 			right: 0;
-			width:44.9vw;
+			width:44.8vw;
 		}
 		.button
 		{
