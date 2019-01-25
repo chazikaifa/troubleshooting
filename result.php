@@ -37,6 +37,29 @@
 				$(this).attr("class","button");
 			});
 			
+			var first_play = true;
+			//语音
+			function audio_play(index){
+				var player = document.getElementById("audio");
+				
+				if(!player.paused){
+					player.pause();
+				}
+				
+				var path = "audios/" + POW + PON + LOS + LAN + "-" + index + ".mp3";
+				player.src = path;
+				player.load();
+				
+				if(first_play){
+					first_play = false;
+					setTimeout(function(){
+						player.play();
+					},1000);
+				}else{
+					player.play();
+				}
+			}
+			
 			var json_url = "./assets/trouble.json";
 			//从JSON文件读取故障类型组合
 			$.getJSON(json_url,function(data,stat){
@@ -56,6 +79,7 @@
 							var solution = data[i]["solution"];
 							$("#solution").attr("index",0);
 							$("#solution").html(solution[0]);			
+							audio_play(0);
 							
 							$("#prev").click(function(){
 								var index = parseInt($("#solution").attr("index"));
@@ -65,6 +89,7 @@
 								}else{
 									$("#solution").attr("index",index-1);
 									$("#solution").html(solution[index-1]);
+									audio_play(index-1);
 									if(index-1 == 0){
 										//若index-1后为0，即不能再上一步
 										$("#prev").attr("class","button pressed");
@@ -95,6 +120,7 @@
 								}else{
 									$("#solution").attr("index",index+1);
 									$("#solution").html(solution[index+1]);	
+									audio_play(index+1);
 									if(index+1 == solution.length-1){
 										//若index+1后等于solution的长度，即不能再"下一步"
 										$("#next").attr("class","button pressed");
@@ -298,6 +324,7 @@
 	</div>
 	
 	<div class="container solution">
+		<audio id="audio" src="audios/0000-0.mp3"/></audio>
 		<div class="box_title">
 			解决建议
 		</div>
